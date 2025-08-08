@@ -2,16 +2,27 @@ pipeline {
     agent any
 
     stages {
-        stage ('changing the file permission') {
+        stage('Check Jenkins Docker Access') {
             steps {
-                sh ' chmod +x build.sh'
+                sh '''
+                    echo "Checking Jenkins user and Docker access..."
+                    whoami
+                    docker ps
+                '''
             }
         }
 
-        stage ('executing the file') {
+        stage('Changing file permission') {
+            steps {
+                sh 'chmod +x build.sh'
+            }
+        }
+
+        stage('Executing the file') {
             steps {
                 sh './build.sh'
             }
         }
     }
 }
+
